@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3 id="q"></h3>
+<div id="opt"></div>
+<p id="timer"></p>
+<button onclick="next()">Next</button>
+
+<script>
+let quiz = [
+  {q:"2+2?", o:["3","4","5"], a:"4"},
+  {q:"Capital of India?", o:["Delhi","Mumbai","Goa"], a:"Delhi"}
+  
+];
+
+let i = 0, score = 0, time = 5, t;
+
+function load(){
+  clearInterval(t);
+  time = 15;
+  timer.innerText = "Time: " + time;
+
+  q.innerText = quiz[i].q;
+  opt.innerHTML = "";
+
+  quiz[i].o.forEach(x=>{
+    opt.innerHTML += `<input type="radio" name="o" value="${x}">${x}<br>`;
+  });
+
+  t = setInterval(()=>{
+    time--;
+    timer.innerText = "Time: " + time;
+
+    if(time == 0){
+      clearInterval(t);
+      next(); 
+    }
+  },1000);
+}
+
+function next(){
+  clearInterval(t);
+  let s = document.querySelector('input[name="o"]:checked');
+  if(s && s.value == quiz[i].a) score++;
+
+  i++;
+  if(i < quiz.length) load();
+  else document.body.innerHTML = "Score: " + score;
+}
+
+load();
+</script>
+
+</body>
+</html>
